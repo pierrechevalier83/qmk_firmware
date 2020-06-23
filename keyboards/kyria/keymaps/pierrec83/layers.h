@@ -1,7 +1,10 @@
 enum layers {
     WORKMAN = 0,
-    RNAV,
+	MOUSE,
     NAV,
-    SYMBOLS,
+	RSYMBOLS,
+    LSYMBOLS,
     FN,
+	NUMBERS,
+	VIM
 };
