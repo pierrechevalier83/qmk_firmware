@@ -1,0 +1,21 @@
+logic:
+
+load the json
+In all layers
+In all keycodes
+Find the longest string
+
+Use max(that length, 25) as the padding target
+
+Layout the arrays as follows:
+5 keys (padded)
+5 keys (padded)
+
+5 keys (padded)
+5 keys (padded)
+
+5 keys (padded)
+5 keys (padded)
+
+2 keys (padded)
+2 keys (padded)
