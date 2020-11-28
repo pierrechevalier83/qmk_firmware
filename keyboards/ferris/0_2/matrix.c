@@ -25,6 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include QMK_KEYBOARD_H
 #include "i2c_master.h"
+#include <print.h>
 
 extern i2c_status_t mcp23017_status;
 #define MCP23017_I2C_TIMEOUT 1000
@@ -59,7 +60,7 @@ bool         i2c_initialized = 0;
 i2c_status_t mcp23017_status = I2C_ADDR;
 
 uint8_t init_mcp23017(void) {
-    print("starting init");
+    print("init mcp23017\n");
     mcp23017_status = I2C_ADDR;
 
     // I2C subsystem
@@ -76,7 +77,9 @@ uint8_t init_mcp23017(void) {
     // This means: we will read all the bits on GPIOA
     // This means: we will write to the pins 0-4 on GPIOB (in select_rows)
     uint8_t buf[]   = {IODIRA, 0b11111111, 0b11110000};
+    print("before transmit\n");
     mcp23017_status = i2c_transmit(I2C_ADDR_WRITE, buf, sizeof(buf), MCP23017_I2C_TIMEOUT);
+    uprintf("after transmit %i\n", mcp23017_status);
     if (!mcp23017_status) {
         // set pull-up
         // - unused  : on  : 1
@@ -86,6 +89,7 @@ uint8_t init_mcp23017(void) {
         // This means: we will write to the pins 0-4 on GPIOB (in select_rows)
         uint8_t pullup_buf[] = {GPPUA, 0b11111111, 0b11110000};
         mcp23017_status      = i2c_transmit(I2C_ADDR_WRITE, pullup_buf, sizeof(pullup_buf), MCP23017_I2C_TIMEOUT);
+        uprintf("after transmit2 %i\n", mcp23017_status);
     }
     return mcp23017_status;
 }
@@ -101,10 +105,18 @@ static void         select_row(uint8_t row);
 
 static uint8_t mcp23017_reset_loop;
 
+static void init_mcu_pins(void) {
+    unselect_rows();
+    unselect_cols();
+}
+
 void matrix_init_custom(void) {
+	debug_enable=true;
+    debug_matrix=true;
+    dprint("matrix_init_custom\n");
     // initialize row and col
     init_mcu_pins();
-    init_mcp23017();
+    mcp23017_status = init_mcp23017();
 
     // initialize matrix state: all keys off
     for (uint8_t i = 0; i < MATRIX_ROWS; i++) {
@@ -129,12 +141,12 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
             // if (++mcp23017_reset_loop >= 1300) {
             // since mcp23017_reset_loop is 8 bit - we'll try to reset once in 255 matrix scans
             // this will be approx bit more frequent than once per second
-            dprint("trying to reset mcp23017\n");
+            print("trying to reset mcp23017\n");
             mcp23017_status = init_mcp23017();
             if (mcp23017_status) {
-                dprint("right side not responding\n");
+                print("right side not responding\n");
             } else {
-                dprint("right side attached\n");
+                print("right side attached\n");
             }
         }
     }
@@ -152,11 +164,6 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
     }
 
     return changed;
-}
-
-static void init_mcu_pins(void) {
-    unselect_rows();
-    unselect_cols();
 }
 
 static matrix_row_t read_cols(uint8_t row) {

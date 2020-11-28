@@ -28,6 +28,7 @@
 #include "i2c_master.h"
 #include <string.h>
 #include <hal.h>
+#include "print.h"
 
 static uint8_t i2c_address;
 
@@ -87,7 +88,8 @@ i2c_status_t i2c_transmit(uint8_t address, const uint8_t* data, uint16_t length,
     i2c_address = address;
     i2cStart(&I2C_DRIVER, &i2cconfig);
     msg_t status = i2cMasterTransmitTimeout(&I2C_DRIVER, (i2c_address >> 1), data, length, 0, 0, TIME_MS2I(timeout));
-    return chibios_to_qmk(&status);
+	uprintf("transmit status: (%i)", status);
+	return chibios_to_qmk(&status);
 }
 
 i2c_status_t i2c_receive(uint8_t address, uint8_t* data, uint16_t length, uint16_t timeout) {
