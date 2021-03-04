@@ -64,16 +64,16 @@ __attribute__((weak)) void i2c_init(void) {
         is_initialised = true;
 
         // Try releasing special pins for a short time
-        palSetPadMode(I2C1_SCL_BANK, I2C1_SCL, PAL_MODE_INPUT);
-        palSetPadMode(I2C1_SDA_BANK, I2C1_SDA, PAL_MODE_INPUT);
+        palSetPadMode(I2C2_SCL_BANK, I2C2_SCL, PAL_MODE_INPUT);
+        palSetPadMode(I2C2_SDA_BANK, I2C2_SDA, PAL_MODE_INPUT);
 
         chThdSleepMilliseconds(10);
 #if defined(USE_GPIOV1)
-        palSetPadMode(I2C1_SCL_BANK, I2C1_SCL, I2C1_SCL_PAL_MODE);
-        palSetPadMode(I2C1_SDA_BANK, I2C1_SDA, I2C1_SDA_PAL_MODE);
+        palSetPadMode(I2C2_SCL_BANK, I2C2_SCL, I2C1_SCL_PAL_MODE);
+        palSetPadMode(I2C2_SDA_BANK, I2C2_SDA, I2C1_SDA_PAL_MODE);
 #else
-        palSetPadMode(I2C1_SCL_BANK, I2C1_SCL, PAL_MODE_ALTERNATE(I2C1_SCL_PAL_MODE) | PAL_STM32_OTYPE_OPENDRAIN);
-        palSetPadMode(I2C1_SDA_BANK, I2C1_SDA, PAL_MODE_ALTERNATE(I2C1_SDA_PAL_MODE) | PAL_STM32_OTYPE_OPENDRAIN);
+        palSetPadMode(I2C2_SCL_BANK, I2C2_SCL, PAL_MODE_ALTERNATE(I2C1_SCL_PAL_MODE) | PAL_STM32_OTYPE_OPENDRAIN);
+        palSetPadMode(I2C2_SDA_BANK, I2C2_SDA, PAL_MODE_ALTERNATE(I2C1_SDA_PAL_MODE) | PAL_STM32_OTYPE_OPENDRAIN);
 #endif
     }
 }
