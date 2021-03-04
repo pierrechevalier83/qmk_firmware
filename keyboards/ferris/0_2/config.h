@@ -68,5 +68,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /* i2c settings */
 
 #define I2C_DRIVER I2CD2
-#define I2C1_SCL 10
-#define I2C1_SDA 11
+#define I2C2_SCL 10
+#define I2C2_SDA 11
+#define I2C1_TIMINGR_PRESC 0U
+#define I2C1_TIMINGR_SCLDEL 7U
+#define I2C1_TIMINGR_SDADEL 0U
+#define I2C1_TIMINGR_SCLH 38U
+#define I2C1_TIMINGR_SCLL 129U
