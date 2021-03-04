@@ -28,7 +28,6 @@
 #include "i2c_master.h"
 #include <string.h>
 #include <hal.h>
-#include "print.h"
 
 static uint8_t i2c_address;
 
@@ -64,16 +63,16 @@ __attribute__((weak)) void i2c_init(void) {
         is_initialised = true;
 
         // Try releasing special pins for a short time
-        palSetPadMode(I2C2_SCL_BANK, I2C2_SCL, PAL_MODE_INPUT);
-        palSetPadMode(I2C2_SDA_BANK, I2C2_SDA, PAL_MODE_INPUT);
+        palSetPadMode(I2C1_SCL_BANK, I2C1_SCL, PAL_MODE_INPUT);
+        palSetPadMode(I2C1_SDA_BANK, I2C1_SDA, PAL_MODE_INPUT);
 
         chThdSleepMilliseconds(10);
 #if defined(USE_GPIOV1)
-        palSetPadMode(I2C2_SCL_BANK, I2C2_SCL, I2C1_SCL_PAL_MODE);
-        palSetPadMode(I2C2_SDA_BANK, I2C2_SDA, I2C1_SDA_PAL_MODE);
+        palSetPadMode(I2C1_SCL_BANK, I2C1_SCL, I2C1_SCL_PAL_MODE);
+        palSetPadMode(I2C1_SDA_BANK, I2C1_SDA, I2C1_SDA_PAL_MODE);
 #else
-        palSetPadMode(I2C2_SCL_BANK, I2C2_SCL, PAL_MODE_ALTERNATE(I2C1_SCL_PAL_MODE) | PAL_STM32_OTYPE_OPENDRAIN);
-        palSetPadMode(I2C2_SDA_BANK, I2C2_SDA, PAL_MODE_ALTERNATE(I2C1_SDA_PAL_MODE) | PAL_STM32_OTYPE_OPENDRAIN);
+        palSetPadMode(I2C1_SCL_BANK, I2C1_SCL, PAL_MODE_ALTERNATE(I2C1_SCL_PAL_MODE) | PAL_STM32_OTYPE_OPENDRAIN);
+        palSetPadMode(I2C1_SDA_BANK, I2C1_SDA, PAL_MODE_ALTERNATE(I2C1_SDA_PAL_MODE) | PAL_STM32_OTYPE_OPENDRAIN);
 #endif
     }
 }
@@ -88,8 +87,7 @@ i2c_status_t i2c_transmit(uint8_t address, const uint8_t* data, uint16_t length,
     i2c_address = address;
     i2cStart(&I2C_DRIVER, &i2cconfig);
     msg_t status = i2cMasterTransmitTimeout(&I2C_DRIVER, (i2c_address >> 1), data, length, 0, 0, TIME_MS2I(timeout));
-	uprintf("transmit status: (%i)", status);
-	return chibios_to_qmk(&status);
+    return chibios_to_qmk(&status);
 }
 
 i2c_status_t i2c_receive(uint8_t address, uint8_t* data, uint16_t length, uint16_t timeout) {

@@ -40,26 +40,11 @@
 #    define I2C1_SDA_BANK GPIOB
 #endif
 
-#ifndef I2C2_SCL_BANK
-#    define I2C2_SCL_BANK GPIOB
-#endif
-
-#ifndef I2C2_SDA_BANK
-#    define I2C2_SDA_BANK GPIOB
-#endif
-
 #ifndef I2C1_SCL
 #    define I2C1_SCL 6
 #endif
 #ifndef I2C1_SDA
 #    define I2C1_SDA 7
-#endif
-
-#ifndef I2C2_SCL
-#    define I2C2_SCL 10
-#endif
-#ifndef I2C2_SDA
-#    define I2C2_SDA 11
 #endif
 
 #ifdef USE_I2CV1
@@ -110,23 +95,6 @@
 #    endif
 #    ifndef I2C1_SDA_PAL_MODE
 #        define I2C1_SDA_PAL_MODE 4
-#    endif
-#endif
-
-#ifdef USE_GPIOV1
-#    ifndef I2C2_SCL_PAL_MODE
-#        define I2C2_SCL_PAL_MODE PAL_MODE_STM32_ALTERNATE_OPENDRAIN
-#    endif
-#    ifndef I2C2_SDA_PAL_MODE
-#        define I2C2_SDA_PAL_MODE PAL_MODE_STM32_ALTERNATE_OPENDRAIN
-#    endif
-#else
-// The default PAL alternate modes are used to signal that the pins are used for I2C
-#    ifndef I2C2_SCL_PAL_MODE
-#        define I2C2_SCL_PAL_MODE 4
-#    endif
-#    ifndef I2C2_SDA_PAL_MODE
-#        define I2C2_SDA_PAL_MODE 4
 #    endif
 #endif
 
