@@ -75,24 +75,35 @@ uint8_t init_mcp23017(void) {
         wait_ms(MCP23017_I2C_TIMEOUT);
     }
 
-    // set pin direction
+    // #define MCP23_ROW_PINS { GBP0, GBP1, GBP2, GBP3 }       outputs
+    // #define MCP23_COL_PINS { GPA0, GBA1, GBA2, GBA3, GBA4 } inputs
+
+	// set pin direction
     // - unused  : input  : 1
     // - input   : input  : 1
     // - driving : output : 0
     // This means: we will read all the bits on GPIOA
     // This means: we will write to the pins 0-4 on GPIOB (in select_rows)
-    uint8_t buf[]   = {IODIRA, 0b11111111, 0b11110000};
+    //uint8_t buf[]   = {IODIRA, 0b11111111, 0b11110000};
+	// Following the example from moonlander:
+	// A is output (all zeroes)
+	// B is inputs (ones for the 4 rightmost bits for B0-B3)
+    uint8_t buf[]   = {IODIRA, 0b00000000, 0b00001111};
     print("before transmit\n");
     mcp23017_status = i2c_transmit(I2C_ADDR_WRITE, buf, sizeof(buf), MCP23017_I2C_TIMEOUT);
     uprintf("after transmit %i\n", mcp23017_status);
-    if (!mcp23017_status) {
+    if (mcp23017_status == MSG_OK) {
         // set pull-up
         // - unused  : on  : 1
         // - input   : on  : 1
         // - driving : off : 0
         // This means: we will read all the bits on GPIOA
         // This means: we will write to the pins 0-4 on GPIOB (in select_rows)
-        uint8_t pullup_buf[] = {GPPUA, 0b11111111, 0b11110000};
+        //uint8_t pullup_buf[] = {GPPUA, 0b11111111, 0b11110000};
+		// Following the example from moonlander:
+		// A is not pulled up (zeroes for the 5 leftmost bits for A0-04)
+		// B is pulled up (all ones)
+        uint8_t pullup_buf[] = {GPPUA, 0b11100000, 0b11111111};
         mcp23017_status      = i2c_transmit(I2C_ADDR_WRITE, pullup_buf, sizeof(pullup_buf), MCP23017_I2C_TIMEOUT);
         uprintf("after transmit2 %i\n", mcp23017_status);
     }
