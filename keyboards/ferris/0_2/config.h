@@ -68,13 +68,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /* i2c settings */
 
 #define I2C_DRIVER I2CD2
-#define I2C2_SCL_BANK GPIOB
-#define I2C2_SCL 10
-#define I2C2_SDA_BANK GPIOB
-#define I2C2_SDA 11
+#define I2C1_SCL_BANK GPIOB
+#define I2C1_SCL 10
+#define I2C1_SDA_BANK GPIOB
+#define I2C1_SDA 11
 #define I2C1_TIMINGR_SCLDEL 3U
 #define I2C1_TIMINGR_SDADEL 1U
 #define I2C1_TIMINGR_SCLH 3U
 #define I2C1_TIMINGR_SCLL 9U
-#define I2C2_SCL_PAL_MODE 1
-#define I2C2_SDA_PAL_MODE 1
+#define I2C1_SCL_PAL_MODE 1
+#define I2C1_SDA_PAL_MODE 1

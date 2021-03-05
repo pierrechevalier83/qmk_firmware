@@ -64,27 +64,6 @@ i2c_status_t mcp23017_status = I2C_ADDR;
 #define I2C2_SDA_BANK GPIOB
 #define I2C2_SDA 11
 
-void i2c_init(void) {
-    static bool is_initialised = false;
-    if (!is_initialised) {
-        is_initialised = true;
-
-        // Try releasing special pins for a short time
-        palSetPadMode(I2C2_SCL_BANK, I2C2_SCL, PAL_MODE_INPUT);
-        palSetPadMode(I2C2_SDA_BANK, I2C2_SDA, PAL_MODE_INPUT);
-
-        chThdSleepMilliseconds(10);
-#if defined(USE_GPIOV1)
-        palSetPadMode(I2C2_SCL_BANK, I2C2_SCL, I2C2_SCL_PAL_MODE);
-        palSetPadMode(I2C2_SDA_BANK, I2C2_SDA, I2C2_SDA_PAL_MODE);
-#else
-        palSetPadMode(I2C2_SCL_BANK, I2C2_SCL, PAL_MODE_ALTERNATE(I2C2_SCL_PAL_MODE) | PAL_STM32_OTYPE_OPENDRAIN);
-        palSetPadMode(I2C2_SDA_BANK, I2C2_SDA, PAL_MODE_ALTERNATE(I2C2_SDA_PAL_MODE) | PAL_STM32_OTYPE_OPENDRAIN);
-#endif
-    }
-}
-
-
 uint8_t init_mcp23017(void) {
     print("init mcp23017\n");
     mcp23017_status = I2C_ADDR;
