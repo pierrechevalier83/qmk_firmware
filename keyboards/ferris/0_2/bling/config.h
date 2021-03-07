@@ -1,5 +1,5 @@
 /*
-Copyright 2021 Pierre Chevalier <pierrechevalier83@gmail.com>
+Copyright 2020 Pierre Chevalier <pierrechevalier83@gmail.com>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -17,12 +17,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#define DEBUG_MATRIX_SCAN_RATE
+#undef PRODUCT_ID
+#define PRODUCT_ID 0x0002
+#undef PRODUCT
+#define PRODUCT    Ferris Bling 0.2
 
-// Underglow configuration
+
+
+/* LED Drivers */
+#define DRIVER_ADDR_1 0b1110100
+#define DRIVER_ADDR_2 0b1110101
+#define DRIVER_COUNT 2
+#define DRIVER_1_LED_TOTAL 7
+#define DRIVER_2_LED_TOTAL 7
+#define DRIVER_LED_TOTAL (DRIVER_1_LED_TOTAL + DRIVER_2_LED_TOTAL)
+
 #ifdef RGBLIGHT_ENABLE
-  #define RGBLIGHT_ANIMATIONS
-  #define RGBLIGHT_HUE_STEP 8
-  #define RGBLIGHT_SAT_STEP 8
-  #define RGBLIGHT_VAL_STEP 8
+#define RGBLED_SPLIT { 7, 7 }
+#define RGBLED_NUM 14
+#define RGBLIGHT_LED_MAP {  0,  1,  2,  3,  4,  5, 6 \
+                           13, 12, 11, 10,  9,  8, 7, }
 #endif
+
